@@ -6,8 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 
-class Utils {
-}
 
 /**
  * To support instant preview (replacement for android's @Preview annotation)
@@ -17,7 +15,7 @@ fun Preview(
     content: @Composable () -> Unit
 ) {
     Window(
-        title = "Compose-Star-Debug",
+        title = "Compose-Droplets-Debug",
         size = IntSize(domain.Window.WIDTH, domain.Window.HEIGHT),
         resizable = false,
         centered = true,

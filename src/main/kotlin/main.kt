@@ -1,7 +1,7 @@
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -9,16 +9,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asDesktopBitmap
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.dp
-import domain.*
-import org.jetbrains.skija.IRect
+import domain.Drop
+import domain.SceneEntity
+import domain.StepFrame
+import domain.drawDrop
 
 fun main() {
 
-    Preview(modifier = Modifier.fillMaxSize()) {
+    Preview {
         val scene = remember { Scene() }
         scene.setupScene()
         val frameState = StepFrame {
@@ -37,7 +36,7 @@ class Scene {
     fun setupScene() {
         sceneEntity.clear()
         drops.clear()
-        repeat(800 * 1) { drops.add(Drop()) }
+        repeat(800 * 5) { drops.add(Drop()) }
         sceneEntity.addAll(drops)
     }
 
@@ -50,23 +49,15 @@ class Scene {
 
     @Composable
     fun render(frameState: State<Long>) {
-        val bitmap = imageResource("images/batman.jpeg").asDesktopBitmap()
-
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        val batmap = imageResource("images/batman.jpg").asDesktopBitmap()
+        Box {
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = Color.Black),
             ) {
 
-                drawIntoCanvas { canvas ->
-                    canvas.nativeCanvas.drawBitmapRect(
-                        bitmap,
-                        IRect(0, 0, Window.WIDTH, Window.HEIGHT).toRect()
-                    )
-                }
+                drawBitmap(batmap)
 
                 val stepFrame = frameState.value
                 for (drop in drops) {

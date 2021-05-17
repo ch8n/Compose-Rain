@@ -1,18 +1,15 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.IntSize
-import org.jetbrains.skija.Image
-import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
-import java.io.File
-import javax.imageio.ImageIO
+import org.jetbrains.skija.Bitmap
+import org.jetbrains.skija.IRect
 
 
 /**
@@ -44,22 +41,11 @@ fun Float.mapRange(fromRange: Pair<Float, Float>, toRange: Pair<Float, Float>): 
     return mappedValue
 }
 
-fun getBatmanImage(): BufferedImage {
-    var image: BufferedImage? = null
-    try {
-        image = ImageIO.read(File("images/batman.jpeg"))
-    } catch (e: Exception) {
-        // image file does not exist
+fun DrawScope.drawBitmap(bitmap: Bitmap) {
+    drawIntoCanvas { canvas ->
+        canvas.nativeCanvas.drawBitmapRect(
+            bitmap,
+            IRect(0, 0, size.width.toInt(), size.height.toInt()).toRect()
+        )
     }
-    if (image == null) {
-        image = BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
-    }
-    return image
-}
-
-fun asImageAsset(image: BufferedImage): ImageBitmap {
-    val baos = ByteArrayOutputStream()
-    ImageIO.write(image, "jpeg", baos)
-
-    return Image.makeFromEncoded(baos.toByteArray()).asImageBitmap()
 }

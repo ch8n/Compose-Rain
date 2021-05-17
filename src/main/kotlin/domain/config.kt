@@ -3,7 +3,7 @@ package domain
 import androidx.compose.ui.graphics.Color
 
 object Window {
-    val DEBUG = true
+    val DEBUG = false
     val WIDTH = if (DEBUG) 800 else 1200
     val HEIGHT = if (DEBUG) 400 else 800
 }
